@@ -1,0 +1,323 @@
+##The following Arcade scripts can be found in the Popup panel of the 'Dashboard Map' in the SEL_Lab ArcGIS Online account. Each script is separated into its own expression and can be altered easily if needed.
+
+##Blueberry popup chart 
+var attributes = {};
+var abundanceFields = [];
+var chartColors = []; // An empty array to add chart colors
+
+
+// Default color for all bars (blue)
+var defaultColor = [120, 130, 185]; // RGB for blue
+
+
+var selectedSite = $feature.siteName
+
+
+// Access the FeatureSet from the Berry Survey Version 5 layer
+var QuadSet = FeatureSetByName($map, "QuadInfo", ["speciesName", "Quantity", "Weight", "quadArea", "yearSample1", "siteName1"]);
+
+
+// Filter for Blueberry data and ensure quadArea > 0
+var filteredSet = Filter(QuadSet, "quadArea > 0 AND speciesName = 'Blueberries' AND siteName1 = @selectedSite");
+
+
+// Group by year, calculate the total quantity and average abundance
+var stats = GroupBy(filteredSet, ["yearSample1"],
+ [
+   { name: "totalQuantity", expression: "Quantity", statistic: "sum" },
+   { name: "averageAbundance", expression: "Quantity / quadArea", statistic: "AVG" }
+ ]
+);
+
+
+// Sort stats by yearSample1 in ascending order
+var sortedStats = OrderBy(stats, "yearSample1 ASC");
+
+
+if (Count(sortedStats) == 0) {
+ return {
+   type: "text",
+   text: "No Blueberry data available for this area"
+ };
+}
+
+
+// Iterate through year data
+for (var s in sortedStats) {
+ var years = s.yearSample1;
+ var avgAbundance = Round(s.averageAbundance);
+
+
+ // Name fields to include the species and year
+ var avgAbundanceFieldName = `Blueberry Abundance in ${years}`;
+
+
+ // Add the average abundance value to attributes
+ attributes[avgAbundanceFieldName] = avgAbundance;
+
+
+ // Add the field name to the abundanceFields array
+ Push(abundanceFields, avgAbundanceFieldName);
+
+
+ // Add the default blue color to the chartColors array
+ Push(chartColors, defaultColor);
+}
+
+
+// Return media content for the chart, with axis labels
+return {
+ type: "media",
+ attributes: attributes,
+ title: "Abundance of Blueberries in m<SUP>2</SUP>",
+ mediaInfos: [{
+   type: "columnchart",
+   value: {
+     fields: abundanceFields, // Chart will display average abundance per year, in increasing order of years
+     colors: chartColors, // Use chartColors array to make all columns blue
+     // Add x-axis and y-axis labels
+     axes: {
+       x: {
+         title: "Year", // Label for the x-axis
+       },
+       y: {
+         title: "Average Abundance in m2", // Label for the y-axis
+       }
+     }
+   }
+ }]
+};
+
+##Cranberry popup chart 
+var attributes = {};
+var abundanceFields = [];
+var chartColors = []; // An empty array to add chart colors
+
+
+// Default color for all bars 
+var defaultColor = [173, 36, 55]; // RGB for red
+
+
+var selectedSite = $feature.siteName
+  
+// Access the FeatureSet from the Berry Survey Version 5 layer
+var QuadSet = FeatureSetByName($map, "QuadInfo", ["speciesName", "Quantity", "Weight", "quadArea", "yearSample1", "siteName1"]);
+
+
+// Filter for Cranberry data and ensure quadArea > 0
+var filteredSet = Filter(QuadSet, "quadArea > 0 AND speciesName = 'Cranberries' AND siteName1 = @selectedSite AND Quantity IS NOT NULL");
+
+
+// Group by year, calculate the total quantity and average abundance
+var stats = GroupBy(filteredSet, ["yearSample1"],
+ [
+   { name: "totalQuantity", expression: "Quantity", statistic: "sum" },
+   { name: "averageAbundance", expression: "Quantity / quadArea", statistic: "AVG" }
+ ]
+);
+
+
+// Sort stats by yearSample1 in ascending order
+var sortedStats = OrderBy(stats, "yearSample1 ASC");
+
+
+if (Count(sortedStats) == 0) {
+ return {
+   type: "text",
+   text: "No Cranberry data available for this area"
+ };
+}
+
+
+// Iterate through year data
+for (var s in sortedStats) {
+ var years = s.yearSample1;
+ var avgAbundance = Round(s.averageAbundance);
+
+
+ // Name fields to include the species and year
+ var avgAbundanceFieldName = `Cranberry Abundance in ${years}`;
+
+
+ // Add the average abundance value to attributes
+ attributes[avgAbundanceFieldName] = avgAbundance;
+
+
+ // Add the field name to the abundanceFields array
+ Push(abundanceFields, avgAbundanceFieldName);
+
+
+ // Add the default red color to the chartColors array
+ Push(chartColors, defaultColor);
+}
+
+
+// Return media content for the chart
+return {
+ type: "media",
+ attributes: attributes,
+ title: "Abundance of Cranberries in m<SUP>2</SUP>",
+ mediaInfos: [{
+   type: "columnchart",
+   value: {
+     fields: abundanceFields, // Chart will display average abundance per year, in increasing order of years
+     colors: chartColors // Use chartColors array to make all columns red
+   }
+ }]
+};
+
+##Crowberry popup chart 
+var attributes = {};
+var abundanceFields = [];
+var chartColors = []; // An empty array to add chart colors
+
+
+// Default color for all bars 
+var defaultColor = [28, 37, 133];
+
+
+var selectedSite = $feature.siteName
+
+// Access the FeatureSet from the Berry Survey Version 5 layer
+var QuadSet = FeatureSetByName($map, "QuadInfo", ["speciesName", "Quantity", "Weight", "quadArea", "yearSample1", "siteName1"]);
+
+
+// Filter for Crowberry data and ensure quadArea > 0
+var filteredSet = Filter(QuadSet, "quadArea > 0 AND speciesName = 'Crowberries' AND siteName1 = @selectedSite AND Quantity IS NOT NULL");
+
+
+// Group by year, calculate the total quantity and average abundance
+var stats = GroupBy(filteredSet, ["yearSample1"],
+ [
+   { name: "totalQuantity", expression: "Quantity", statistic: "sum" },
+   { name: "averageAbundance", expression: "Quantity / quadArea", statistic: "AVG" }
+ ]
+);
+
+
+// Sort stats by yearSample1 in ascending order
+var sortedStats = OrderBy(stats, "yearSample1 ASC");
+
+
+if (Count(sortedStats) == 0) {
+ return {
+   type: "text",
+   text: "No Crowberry data available for this area"
+ };
+}
+
+
+// Iterate through year data
+for (var s in sortedStats) {
+ var years = s.yearSample1;
+ var avgAbundance = Round(s.averageAbundance);
+
+
+ // Name fields to include the species and year
+ var avgAbundanceFieldName = `Crowberry Abundance in ${years}`;
+
+
+ // Add the average abundance value to attributes
+ attributes[avgAbundanceFieldName] = avgAbundance;
+
+
+ // Add the field name to the abundanceFields array
+ Push(abundanceFields, avgAbundanceFieldName);
+
+
+ // Add the default blue color to the chartColors array
+ Push(chartColors, defaultColor);
+}
+
+
+// Return media content for the chart
+return {
+ type: "media",
+ attributes: attributes,
+ title: "Abundance of Crowberries in m<SUP>2</SUP>",
+ mediaInfos: [{
+   type: "columnchart",
+   value: {
+     fields: abundanceFields, // Chart will display average abundance per year, in increasing order of years
+     colors: chartColors // Use chartColors array to make all columns dark blue
+   }
+ }]
+};
+
+##Cloudberry popup chart 
+var attributes = {};
+var abundanceFields = [];
+var chartColors = []; // An empty array to add chart colors
+
+
+// Default color for all bars 
+var defaultColor = [196, 143, 47]; // RGB for orange 
+
+
+var selectedSite = $feature.siteName
+
+// Access the FeatureSet from the Berry Survey Version 5 layer
+var QuadSet = FeatureSetByName($map, "QuadInfo", ["speciesName", "Quantity", "Weight", "quadArea", "yearSample1", "siteName1"]);
+
+
+// Filter for Cloudberry data and ensure quadArea > 0
+var filteredSet = Filter(QuadSet, "quadArea > 0 AND speciesName = 'Cloudberries' AND siteName1 = @selectedSite AND Quantity IS NOT NULL");
+
+
+// Group by year, calculate the total quantity and average abundance
+var stats = GroupBy(filteredSet, ["yearSample1"],
+ [
+   { name: "totalQuantity", expression: "Quantity", statistic: "sum" },
+   { name: "averageAbundance", expression: "Quantity / quadArea", statistic: "AVG" }
+ ]
+);
+
+
+// Sort stats by yearSample1 in ascending order
+var sortedStats = OrderBy(stats, "yearSample1 ASC");
+
+
+if (Count(sortedStats) == 0) {
+ return {
+   type: "text",
+   text: "No Cloudberry data available for this area"
+ };
+}
+
+
+// Iterate through year data
+for (var s in sortedStats) {
+ var years = s.yearSample1;
+ var avgAbundance = Round(s.averageAbundance);
+
+
+ // Name fields to include the species and year
+ var avgAbundanceFieldName = `Cloudberry Abundance in ${years}`;
+
+
+ // Add the average abundance value to attributes
+ attributes[avgAbundanceFieldName] = avgAbundance;
+
+
+ // Add the field name to the abundanceFields array
+ Push(abundanceFields, avgAbundanceFieldName);
+
+
+ // Add the default orange color to the chartColors array
+ Push(chartColors, defaultColor);
+}
+
+
+// Return media content for the chart
+return {
+ type: "media",
+ attributes: attributes,
+ title: "Abundance of Cloudberries in m<SUP>2</SUP>",
+ mediaInfos: [{
+   type: "columnchart",
+   value: {
+     fields: abundanceFields, // Chart will display average abundance per year, in increasing order of years
+     colors: chartColors // Use chartColors array to make all columns orange
+   }
+ }]
+};
