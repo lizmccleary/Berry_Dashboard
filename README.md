@@ -1,2 +1,2 @@
 # Berry_Dashboard
-Arcade scripts used to calculate and generate interactive berry graphs in Dashboard
+Arcade scripts used to calculate and generate interactive berry graphs in 'Long-term monitoring of berries across Inuit Nunangat' Dashboard. Each script is activated when a point on the map is selected. These scripts are linked to the Berry Survey and will continuously update as new berry data is added. Scripts can be updated through accessing the 'Dashboard Map' web map, selecting the Berry Survey Version 5 sublayer and navigating to the 'Popup' widget in the right-hand panel.  
